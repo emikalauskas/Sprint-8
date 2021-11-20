@@ -1,1 +1,24 @@
-
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-deployment
+  labels:
+    app: docker
+    type: back-end
+spec:
+  template:
+    metadata:
+      name: docker-pod
+      labels:
+        app: docker
+        type: back-end
+    spec:
+      containers:
+        - name: docker-container
+          image: docker
+          ports:
+            - containerPort: 8080
+  replicas: 5
+  selector:
+    matchLabels:
+      type: back-end
