@@ -35,7 +35,7 @@ class SlowlyApiTest {
     }
 
     @Test
-    fun `getSomething() should return predefined data`() {
+    fun `getPokemon() should return fallback`() {
         // given
         MockServerClient("127.0.0.1", 18080)
             .`when`(
@@ -51,6 +51,20 @@ class SlowlyApiTest {
                     .withDelay(TimeUnit.SECONDS, 30) //
             )
         // expect
-        assertEquals("predefined data", client.getSomething().data)
+        assertEquals("fallback", client.getPokemon().name)
+    }
+
+    @Test
+    fun `getPokemon() should return name`() {
+        // given
+        MockServerClient("127.0.0.1", 18080)
+            .`when`(
+                // задаем матчер для нашего запроса
+                HttpRequest.request()
+                    .withMethod("GET")
+                    .withPath("/pokemon/pikachu")
+            )
+        // expect
+        assertEquals("fallback", client.getPokemon().name)
     }
 }
